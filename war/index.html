@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
+<!-- above set at the top of the file will set     -->
+<!-- the browser's rendering engine into           -->
+<!-- "Quirks Mode". Replacing this declaration     -->
+<!-- with a "Standards Mode" doctype is supported, -->
+<!-- but may lead to some differences in layout.   -->
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Heerendispuut Nobiscum</title>
+  </head>
+
+  <body>
+  </body>
+  <script language="JavaScript">
+(function(body){
+  var kleuren=(function(){
+    var kleuren={
+      "paars": [106,52,107],
+      "geel": [208,197,47]
+    }
+    return function(kleur, hoeveel){
+      var rgb=kleuren[kleur];
+      var waarde=function(v){return Math.round(hoeveel*v);}
+      if(rgb){
+        return "rgb("+waarde(rgb[0])+","+waarde(rgb[1])+","+waarde(rgb[2])+")";
+      }else{
+        return "rgb(0,0,0)";
+      }
+    };
+  })();
+
+  var geefkleur=function(ding, kleur, hoeveel){
+    ding.style.backgroundColor=kleuren(kleur, hoeveel);
+    return ding;
+  };
+
+  var maak=(function(){
+    var tabel=function(rijen, hoogtes){
+      var table=document.createElement('table');
+      table.setAttribute('style','width:100%;height:100%;margin:0px;padding:0px;border-spacing:0px;color:inherit');
+      var hoogte;
+      for(var i=0;i<rijen.length;i++){
+        if(hoogtes){hoogte=hoogtes[i];}
+        table.appendChild((function(rij, hoogte){
+          var tr=document.createElement('tr');
+          if(hoogte){tr.style.height=hoogte;}
+          for(var i=0;i<rij.length;i++){
+            tr.appendChild((function(cel){
+              var td=document.createElement('td');
+              td.setAttribute('align','center');
+              td.style.padding="0px";
+              td.appendChild(typeof cel==="string"?document.createTextNode(cel):cel);
+              return td;
+            })(rij[i]));
+          }
+          return tr;
+        })(rijen[i], hoogte));
+      }
+      return table;
+    };
+    return {
+      tabel: tabel
+    };
+  })();
+
+  (function(){
+    body.setAttribute('style','overflow:hidden;padding:20px');
+  })(body);
+
+  geefkleur(body, "paars", 0.5);
+
+  var middenstuk=(function(waar){
+    var laatZien;
+    var div=document.createElement('div');
+    div.setAttribute('style','width:100%;height:100%;border-radius:10px;color:'+kleuren("geel",1)+";font-family:Arial");
+
+    var header=(function(){
+      var header=document.createElement('div');
+      header.setAttribute('style','position:relative;width:100%;height:100%;font-size:30px;border-top-left-radius:10px;border-top-right-radius:10px');
+      header.setAttribute('align','center');
+      header.appendChild((function(){
+        var a=document.createElement('div');
+        a.setAttribute('style','position:relative;top:50%;transform: translateY(-50%)');
+        a.appendChild(document.createTextNode('Heerendispuut Nobiscum'));
+        return a;
+      })());
+      header.appendChild((function(){
+        var wapen=document.createElement('img');
+        wapen.setAttribute('src','wapen.svg');
+        wapen.setAttribute('style', 'position:absolute;right:0px;top:-20px');
+        body.onload=function(){wapen.setAttribute('height',header.clientHeight*1.5);}
+        return wapen;
+      })());
+      return geefkleur(header,"paars",1.5);
+    })();
+
+    var menu=(function(){
+      var items=[
+        ["Over ONS",function(){laatZien('Onze vereniging tekent het volgende van ONS op:\n<i>Waarde UMTC\'er</i>,\n<i>Tot op heden zijn wij achttien heren, in paars en gele kleren, die UMTC een warm hart toedragen en vinden dat deze vereniging alles in zich heeft om zich wat studentikoziteit, tradities en manier van doen betreft op een dag te kunnen meten met ieder "collegium", "gezelschap" of "corps" dat, iedere "unitas", "societas" of "vereniging" die die begrippen ook maar ergens in zijn of haar vaandel heeft staan. Om dit te verwezenlijken dient men de wereld met ondernemingslust, doorzettingsvermogen, nederigheid, nieuwsgierigheid en een open geest niet alleen tegemoet te zien, maar ook tegemoet te gáán. En dat is precies wat wij proberen te doen. Wij zien die buitenwereld immers niet als een grote boze, maar als een fascinerende, bizarre maar vooral leerzame. Onze voelsprieten blijven echter altijd geworteld binnen, en worden gevoed door, studentenvereniging UMTC - op zich ook al een wereld.</i>\nE-mail: abt@nobiscum.nl');}],
+        ["Leden",function(){laatZien('Arthur Fischer\nCedric Hall\nDaan Valkenburg\nWouter den Bode\nEdwin Romeijn\nEmile Fokkema\nEric Bode\nJaap van der Steenhoven\nJiri Grundemann\nJoris Ahsmann\nMartijn van Rosmalen\nMichiel Nanninga\nPaul Kok\nRemco Tans\nRinse Liefferink\nSjoerd Boersma\nStan de Beus\nThomas Verdoes\nTijn Tas\nTimmy Grimberg\nToon Meelen');}],
+        ["Activiteiten",function(){laatZien('Over onze activiteiten.');}]
+      ];
+      var node=document.createElement('div');
+      node.setAttribute('style','width:100%;height:100%;margin:0px;padding:0px');
+      var rij=[];
+      for(var i=0;i<items.length;i++){
+        rij.push((function(index, data){
+          var knop=document.createElement('div');
+          knop.setAttribute('style','width:100%;height:100%;cursor:pointer');
+          knop.setAttribute('align','center');
+          knop.appendChild((function(){
+            var a=document.createElement('div');
+            a.setAttribute('style','position:relative;top:50%;transform: translateY(-50%)');
+            a.appendChild(document.createTextNode(data[0]));
+            return a;
+          })());
+          knop.onclick=(function(i){return function(){menu.highlight(i);data[1]();}})(index);
+          return geefkleur(knop, "paars", 0.85);
+        })(i, items[i]));
+      }
+      node.appendChild(maak.tabel([rij]));
+      var highlight=function(n){
+        for(var i=0;i<rij.length;i++){
+          if(i==n){
+            geefkleur(rij[i], "paars",1);
+          }else{
+            geefkleur(rij[i], "paars",0.85);
+          }
+        }
+      };
+      return {node:node,highlight:highlight};
+    })();
+
+    var content=(function(){
+      var content=document.createElement('div');
+      content.setAttribute('style','width:95%;height:95%;overflow:scroll');
+      content.setAttribute('align','left');
+      laatZien=function(iets){
+        content.innerHTML="";
+        if(typeof iets==="string"){
+          var alineas=iets.split('\n');
+          if(alineas.length>1){
+            for(var i=0;i<alineas.length;i++){
+              content.appendChild((function(tekst){
+                var p=document.createElement('p');
+                if(tekst.indexOf('<i>')!=-1){
+                  p.innerHTML=tekst;
+                }else{
+                  p.appendChild(document.createTextNode(tekst));
+                }
+                return p;
+              })(alineas[i]));
+            }
+          }else{
+            content.appendChild(document.createTextNode(iets));
+          }
+        }else{
+          content.appendChild(iets);
+        }
+      };
+      return content;
+    })();
+    div.appendChild(maak.tabel([[header],[menu.node],[content]],['15%','10%','75%']));
+    waar.appendChild(geefkleur(div, "paars",1));
+    
+    return {
+      laatZien: function(node){laatZien(node);return this;}
+    };
+  })(body);
+
+  
+
+  middenstuk.laatZien('Omnes Nobiscum Semper');
+})(document.body);
+  </script>
+</html>

@@ -13,6 +13,15 @@
   </head>
 
   <body>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    </script>
   </body>
   <script language="JavaScript">
 (function(body){
@@ -67,7 +76,7 @@
   })();
 
   (function(){
-    body.setAttribute('style','overflow:hidden;padding:20px');
+    body.setAttribute('style','overflow:hidden;padding:20px;padding-bottom:40px;margin:0px');
   })(body);
 
   geefkleur(body, "paars", 0.5);
@@ -165,7 +174,18 @@
     })();
     div.appendChild(maak.tabel([[header],[menu.node],[content]],['15%','10%','75%']));
     waar.appendChild(geefkleur(div, "paars",1));
-    
+    var likeButton=(function(){
+        var likeButton=document.createElement('div');
+        likeButton.setAttribute('class', 'fb-like');
+        likeButton.setAttribute('data-href',window.location.href);
+        likeButton.setAttribute('data-layout','standard');
+        likeButton.setAttribute('data-action','like');
+        likeButton.setAttribute('data-show-faces','false');
+        likeButton.setAttribute('data-share','false');
+        likeButton.setAttribute('style','position:absolute;left:20px;bottom:10px');
+        return likeButton;
+    })();
+    body.appendChild(likeButton);
     return {
       laatZien: function(node){laatZien(node);return this;}
     };
